@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, Button, FlatList, Pressable, TextInput, TouchableOpacity, StyleSheet  } from 'react-native';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import EventCell from '../Cells/EventCell';
 
 const data = [
@@ -8,14 +10,18 @@ const data = [
     id: '1',
     title: 'Fuji Rock Festival 2020',
     scene: 'Sahne A',
-    date: 'Aug 29',
+    day: '29',
+    month: 'Aug',
+    time: '21:00',
     image: require('../images/event1.jpg'),
   },
   {
     id: '2',
-    title: 'Etkinlik 2',
+    title: 'Ultra Music Festival',
     scene: 'Sahne B',
-    date: 'Aug 30',
+    day: '29',
+    month: 'Aug',
+    time: '21:00',
     image: require('../images/event2.jpg'),
   },
 ];
@@ -26,13 +32,16 @@ const HomeScreen = ({ navigation }) => {
     const [searchQuery, setSearchQuery] = useState('');
   
     const handleSearch = (query) => {
-      const filtered = data.filter(item => item.date.includes(query));
+      const filtered = data.filter(item => item.day.includes(query));
       setFilteredData(filtered);
       setSearchQuery(query);
     };
     const renderItem = ({ item }) => (
       <View style={styles.cell}>
-        <Text style={styles.dateText}>{item.date}</Text>
+        <View style={styles.dateRow}>
+          <Text style={styles.dayText}>{item.day}</Text>
+          <Text style={styles.dateText}>{item.month}</Text>
+        </View>
         <EventCell event={item} />
       </View>
     );
@@ -46,10 +55,10 @@ const HomeScreen = ({ navigation }) => {
             value={searchQuery}
             onChangeText={handleSearch}
           />
-          <TouchableOpacity style={styles.filterButton}>
-            <Text style={styles.filterButtonText}>Filter</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.filterButton}>
+          <FontAwesomeIcon icon={faFilter} style={styles.filterIcon} />
+        </TouchableOpacity>
+      </View>
         <FlatList
           data={filteredData}
           renderItem={renderItem}
@@ -91,14 +100,36 @@ const HomeScreen = ({ navigation }) => {
     cell: {
       flexDirection: 'row',
       alignItems: 'center',
-      paddingVertical: 8,
+      paddingVertical: 16,
       borderBottomWidth: 1,
       borderColor: '#ccc',
+    },
+    dateRow: {
+      flexDirection: 'column',
+      paddingLeft: 16,
+      paddingRight: 16,
+      alignItems: 'center',
+    },
+    dayText: {
+      marginRight: 12,
+      fontWeight: 'bold',
+      fontSize: 16,
+      color: 'red'
     },
     dateText: {
       marginRight: 12,
       fontWeight: 'bold',
       fontSize: 16,
+    },
+    filterButton: {
+      backgroundColor: '#007bff',
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      borderRadius: 8,
+    },
+    filterIcon: {
+      color: 'white',
+      fontSize: 20,
     },
   });
 export default HomeScreen;

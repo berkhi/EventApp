@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons'; 
 
 const EventCell = ({ event }) => {
   return (
@@ -9,7 +10,8 @@ const EventCell = ({ event }) => {
         <Text style={styles.title}>{event.title}</Text>
         <View style={styles.dateSceneContainer}>
           <Text style={styles.dateSceneText}>{event.scene}</Text>
-          <Text style={styles.dateSceneText}>{event.date}</Text>
+          <FontAwesome5 name="clock" style={styles.clockIcon} />
+          <Text style={styles.dateSceneText}>{event.time}</Text>
         </View>
       </View>
     </View>
@@ -47,7 +49,12 @@ const styles = StyleSheet.create({
   dateSceneText: {
     fontSize: 14,
     color: 'white',
-    marginRight: 20,
+    marginRight: 30,
+  },
+  clockIcon: {
+    fontSize: 14,
+    color: 'white',
+    marginRight: 5,
   },
 });
 export default EventCell;

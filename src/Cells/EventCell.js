@@ -9,7 +9,7 @@ const EventCell = ({ event }) => {
       <View style={styles.textContainer}>
         <Text style={styles.title}>{event.title}</Text>
         <View style={styles.dateSceneContainer}>
-          <Text style={styles.dateSceneText}>{event.scene}</Text>
+          <Text style={styles.dateSceneText}>{event.sceneAndCity}</Text>
           <FontAwesome5 name="clock" style={styles.clockIcon} />
           <Text style={styles.dateSceneText}>{event.time}</Text>
         </View>

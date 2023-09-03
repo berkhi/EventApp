@@ -3,9 +3,14 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 
 const EventCell = ({ event }) => {
+  console.log('Resimler:', event.image);
+
+
+  const firstImage = event.image[0];
+
   return (
     <View style={styles.container}>
-      <Image source={event.image} style={styles.image} />
+      <Image source={firstImage} style={styles.image} />
       <View style={styles.textContainer}>
         <Text style={styles.title}>{event.title}</Text>
         <View style={styles.dateSceneContainer}>

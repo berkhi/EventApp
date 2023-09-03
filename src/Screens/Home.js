@@ -6,11 +6,13 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import EventCell from '../Cells/EventCell';
 import FilterModal from '../Cells/FilterModal';
 import { format } from 'date-fns';
+import { useNavigation } from '@react-navigation/native';
 
 const categoryOptions = ["Hepsi", "Music", "Spor", "Sahne", "Aile", "Müze"];
 const locationOptions = ["Tüm Türkiye", "İstanbul / Marmara", "Ankara / İç Anadolu", "İzmir / Ege", "Antalya / Akdeniz", "Diğer"];
 
 const HomeScreen = ({ navigation }) => {
+  const { navigate } = useNavigation();
 
   const [filteredData, setFilteredData] = useState(data);
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,6 +24,10 @@ const HomeScreen = ({ navigation }) => {
     setSearchQuery(query);
   };
 
+  const handleEventPress = (event) => {
+    navigate('EventDetailsScreen', { event });
+  };
+
   const openFilterModal = () => {
     setIsFilterModalVisible(true);
   };
@@ -31,7 +37,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const applyFilters = (selectedCategory, selectedDate, selectedLocation) => {
-    const formattedSelectedDate = format(selectedDate, 'dd/MM/yyyy'); // Format the selected date
+    const formattedSelectedDate = format(selectedDate, 'dd/MM/yyyy');
 
     const filtered = data.filter(item => {
       const isCategoryMatch = item.eventType === selectedCategory || selectedCategory === "Hepsi";
@@ -52,13 +58,15 @@ const HomeScreen = ({ navigation }) => {
 
 
   const renderItem = ({ item }) => (
-    <View style={styles.cell}>
-      <View style={styles.dateRow}>
-        <Text style={styles.dayText}>{item.day}</Text>
-        <Text style={styles.dateText}>{item.month}</Text>
+    <TouchableOpacity onPress={() => handleEventPress(item)}>
+      <View style={styles.cell}>
+        <View style={styles.dateRow}>
+          <Text style={styles.dayText}>{item.day}</Text>
+          <Text style={styles.dateText}>{item.month}</Text>
+        </View>
+        <EventCell event={item} />
       </View>
-      <EventCell event={item} />
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -84,7 +92,7 @@ const HomeScreen = ({ navigation }) => {
         onClose={closeFilterModal}
         categoryOptions={categoryOptions}
         locationOptions={locationOptions}
-        applyFilters={applyFilters} // Pass applyFilters function to FilterModal
+        applyFilters={applyFilters}
       />
     </View>
   );
@@ -97,11 +105,19 @@ const data = [
     eventType: 'Music',
     sceneAndCity: 'JJ Pub Ankara',
     city: 'Ankara / İç Anadolu',
+    eventInfo: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     day: '30',
     month: 'Aug',
     fullDate: '30/08/2023',
     time: '21:00',
-    image: require('../images/event1.jpg'),
+    ticketPrices: [
+      { type: 'Normal', price: 200 },
+      { type: 'VIP', price: 400 },
+    ],
+    image: [
+      require('../images/event1.jpg'),
+      require('../images/default-event-image.jpg'),
+    ],
   },
   {
     id: '2',
@@ -109,11 +125,20 @@ const data = [
     eventType: 'Music',
     sceneAndCity: 'JJ Pub Ankara',
     city: 'Ankara / İç Anadolu',
+    eventInfo: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     day: '29',
     month: 'Aug',
     fullDate: '30/08/2023',
     time: '21:00',
-    image: require('../images/event2.jpg'),
+    ticketPrices: [
+      { type: 'Normal', price: 200 },
+      { type: 'VIP', price: 400 },
+    ],
+    image: [
+      require('../images/event2.jpg'),
+      require('../images/default-event-image.jpg'),
+    ],
+    
   },
   {
     id: '3',
@@ -121,11 +146,19 @@ const data = [
     eventType: 'Spor',
     sceneAndCity: 'JJ Pub Ankara',
     city: 'Ankara / İç Anadolu',
+    eventInfo: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     day: '29',
     month: 'Aug',
     fullDate: '30/08/2023',
     time: '21:00',
-    image: require('../images/event3.jpg'),
+    ticketPrices: [
+      { type: 'Normal', price: 200 },
+      { type: 'VIP', price: 400 },
+    ],
+    image: [
+      require('../images/event3.jpg'),
+      require('../images/default-event-image.jpg'),
+    ],
   },
   {
     id: '4',
@@ -133,11 +166,19 @@ const data = [
     eventType: 'Music',
     sceneAndCity: 'Harbiye Açıkhava İstanbul',
     city: 'İstanbul / Marmara',
+    eventInfo: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     day: '29',
     month: 'Aug',
     fullDate: '11/09/2023',
     time: '21:00',
-    image: require('../images/event4.jpg'),
+    ticketPrices: [
+      { type: 'Normal', price: 200 },
+      { type: 'VIP', price: 400 },
+    ],
+    image: [
+      require('../images/event4.jpg'),
+      require('../images/default-event-image.jpg'),
+    ],
   },
   {
     id: '5',
@@ -145,11 +186,19 @@ const data = [
     eventType: 'Spor',
     sceneAndCity: 'JJ Pub Ankara',
     city: 'Ankara / İç Anadolu',
+    eventInfo: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     day: '29',
     month: 'Aug',
     fullDate: '13/09/2023',
     time: '21:00',
-    image: require('../images/event5.jpg'),
+    ticketPrices: [
+      { type: 'Normal', price: 200 },
+      { type: 'VIP', price: 400 },
+    ],
+    image: [
+      require('../images/event5.jpg'),
+      require('../images/default-event-image.jpg'),
+    ],
   },
   {
     id: '6',
@@ -157,11 +206,19 @@ const data = [
     eventType: 'Spor',
     sceneAndCity: 'Tuzla İstanbul',
     city: 'İstanbul / Marmara',
+    eventInfo: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     day: '29',
     month: 'Sep',
     fullDate: '13/09/2023',
     time: '13:00',
-    image: require('../images/event6.jpg'),
+    ticketPrices: [
+      { type: 'Normal', price: 200 },
+      { type: 'VIP', price: 400 },
+    ],
+    image: [
+      require('../images/event6.jpg'),
+      require('../images/default-event-image.jpg'),
+    ],
   },
 ];
 

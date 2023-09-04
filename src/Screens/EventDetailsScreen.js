@@ -2,15 +2,21 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, Modal, TouchableOpacity, Button, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import EventImageSlider from '../Cells/EventImageSlider';
+import { useNavigation } from '@react-navigation/native';
 
 const EventDetailsScreen = ({ route }) => {
-  const { event } = route.params;
-  console.log('Resimler:', event.image);
+  const { event, allEvents } = route.params;
+  //console.log('Tıklanan Etkinlik:', event);
+  //console.log('Tüm Etkinlikler:', allEvents);
   const [selectedTicketType, setSelectedTicketType] = useState(event.ticketPrices[0].type);
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [isTicketTypePickerVisible, setIsTicketTypePickerVisible] = useState(false);
   const [isTicketQuantityPickerVisible, setIsTicketQuantityPickerVisible] = useState(false);
   const [showFullEventInfo, setShowFullEventInfo] = useState(false);
+  const { navigate } = useNavigation();
+  const handleCityClick = (event) => {
+    navigate('CityEventsScreen', { event, allEvents });
+  };
 
   const selectedTicketPrice = event.ticketPrices.find(price => price.type === selectedTicketType).price;
 
@@ -19,6 +25,7 @@ const EventDetailsScreen = ({ route }) => {
   const ticketQuantityOptions = Array.from({ length: 10 }, (_, i) => i + 1);
 
   const handleAddToCart = () => {
+
     alert(`Sepete ${ticketQuantity} adet ${selectedTicketType} bileti eklendi.`);
   };
 
@@ -27,13 +34,17 @@ const EventDetailsScreen = ({ route }) => {
     <ScrollView style={styles.container}>
       <EventImageSlider images={event.image} />
       <Text style={styles.title}>{event.title}</Text>
-      <Text style={styles.location}>{event.sceneAndCity}</Text>
+
+      <TouchableOpacity onPress={() => handleCityClick(event)}>
+        <Text style={styles.location}>{event.sceneAndCity}</Text>
+      </TouchableOpacity>
       <Text style={styles.dateTime}>{event.fullDate}, {event.time}</Text>
 
       <Text style={styles.title}>Etkinlik Bilgileri:</Text>
       <Text style={styles.eventInfo}>
         {showFullEventInfo ? event.eventInfo : event.eventInfo.slice(0, 200)}
       </Text>
+
       {!showFullEventInfo && (
         <TouchableOpacity onPress={() => setShowFullEventInfo(true)}>
           <Text style={styles.readMoreButton}>Daha Fazla</Text>
@@ -44,6 +55,7 @@ const EventDetailsScreen = ({ route }) => {
       <TouchableOpacity onPress={() => setIsTicketTypePickerVisible(true)}>
         <Text style={styles.dropdownText}>{selectedTicketType}</Text>
       </TouchableOpacity>
+
       <Modal
         transparent={true}
         animationType="slide"
@@ -68,9 +80,11 @@ const EventDetailsScreen = ({ route }) => {
       </Modal>
 
       <Text style={styles.label}>Bilet Adedi:</Text>
+      
       <TouchableOpacity onPress={() => setIsTicketQuantityPickerVisible(true)}>
         <Text style={styles.dropdownText}>{ticketQuantity}</Text>
       </TouchableOpacity>
+
       <Modal
         transparent={true}
         animationType="slide"
@@ -97,7 +111,10 @@ const EventDetailsScreen = ({ route }) => {
       <Text style={styles.label}>Toplam Fiyat:</Text>
       <Text style={styles.totalAmount}>{totalAmount} TL</Text>
 
-      <Button title="Sepete Ekle" onPress={handleAddToCart} />
+      <TouchableOpacity style={styles.button} onPress={handleAddToCart}>
+        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16, textAlign: 'center', }}>Sepete Ekle</Text>
+      </TouchableOpacity>
+
     </ScrollView>
   );
 };
@@ -157,6 +174,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  button: {
+    borderWidth: 1,
+    borderColor: '#007bff',
+    backgroundColor: '#007bff',
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    borderRadius: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    marginTop: 16,
   },
 });
 

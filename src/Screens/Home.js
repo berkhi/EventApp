@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, Button, FlatList, Pressable, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import axios from 'axios';
+import React, { useState } from 'react'
+import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import EventCell from '../Cells/EventCell';
@@ -25,7 +24,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const handleEventPress = (event) => {
-    navigate('EventDetailsScreen', { event });
+    navigate('EventDetailsScreen', { event, allEvents: data });
   };
 
   const openFilterModal = () => {
@@ -42,7 +41,7 @@ const HomeScreen = ({ navigation }) => {
     const filtered = data.filter(item => {
       const isCategoryMatch = item.eventType === selectedCategory || selectedCategory === "Hepsi";
       console.log('CATEGORIES', { eventType: item.eventType, selectedCategory })
-      // Compare formattedSelectedDate with item's fullDate
+
       const isDateMatch = item.fullDate === formattedSelectedDate;
       console.log('DATES', { fullDate: item.fullDate, formattedSelectedDate })
       const isLocationMatch = selectedLocation === "Tüm Türkiye" || item.city === selectedLocation;

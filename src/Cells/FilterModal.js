@@ -66,14 +66,14 @@ const FilterModal = ({ visible, onClose, categoryOptions, locationOptions, apply
                         )}
 
                         {activeTab === "Tarih Seç" && (
-                            <View style={styles.optionContainer}>
+                            <View style={styles.datePicker}>
                                 <DateTimePicker
                                     value={selectedDate}
                                     mode="date"
                                     display="default"
-                                    // minimumDate={new Date()}
+                                    minimumDate={new Date()}
                                     onChange={(event, date) => {
-                                        console.log('SEÇTİĞİM DATE', date)
+                                        //console.log('SEÇTİĞİM DATE', date)
                                         handleDateSelect(date)
                                     }}
                                 />
@@ -141,6 +141,9 @@ const styles = StyleSheet.create({
     optionText: {
         fontSize: 14,
         color: '#333',
+    },
+    datePicker:{
+        alignItems: 'center',
     },
     modalButtons: {
         flexDirection: 'row',

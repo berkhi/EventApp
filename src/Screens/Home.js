@@ -18,7 +18,13 @@ const HomeScreen = ({ navigation }) => {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
 
   const handleSearch = (query) => {
-    const filtered = originalData.filter(item => item.title.includes(query));
+    const lowercaseQuery = query.toLowerCase();
+    
+    const filtered = data.filter(item => {
+      const lowercaseTitle = item.title.toLowerCase();
+      return lowercaseTitle.includes(lowercaseQuery);
+    });
+  
     setFilteredData(filtered);
     setSearchQuery(query);
   };
@@ -44,6 +50,7 @@ const HomeScreen = ({ navigation }) => {
 
       const isDateMatch = item.fullDate === formattedSelectedDate;
       console.log('DATES', { fullDate: item.fullDate, formattedSelectedDate })
+
       const isLocationMatch = selectedLocation === "Tüm Türkiye" || item.city === selectedLocation;
       console.log('FILTER PARAMETERS', { isCategoryMatch, isDateMatch, isLocationMatch })
       return isCategoryMatch && isDateMatch && isLocationMatch;

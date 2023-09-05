@@ -1,13 +1,13 @@
 import React, { Profiler } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Profile from '../Screens/Profile';
+import CartScreen from '../Screens/CartScreen';
 
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Profile" component={Profile} options={{ title: 'Profile' }} />
+      <Stack.Screen name="CartScreen" component={CartScreen} options={{ title: 'Cart' }} />
     </Stack.Navigator>
   );
 };

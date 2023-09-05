@@ -3,9 +3,12 @@ import { View, Text, StyleSheet, Image, TextInput, Modal, TouchableOpacity, Butt
 import { Picker } from '@react-native-picker/picker';
 import EventImageSlider from '../Cells/EventImageSlider';
 import { useNavigation } from '@react-navigation/native';
+import MapView, { Marker } from 'react-native-maps';
+import { useCart } from '../Context/CartContext'
 
 const EventDetailsScreen = ({ route }) => {
   const { event, allEvents } = route.params;
+  const { dispatch } = useCart();
   //console.log('Tıklanan Etkinlik:', event);
   //console.log('Tüm Etkinlikler:', allEvents);
   const [selectedTicketType, setSelectedTicketType] = useState(event.ticketPrices[0].type);
@@ -24,11 +27,27 @@ const EventDetailsScreen = ({ route }) => {
 
   const ticketQuantityOptions = Array.from({ length: 10 }, (_, i) => i + 1);
 
-  const handleAddToCart = () => {
 
+
+  const handleAddToCart = () => {
+    const newCartItem = {
+      id: event.id,
+      image: event.image[0],
+      title: event.title,
+      sceneAndCity: event.sceneAndCity,
+      fullDate: event.fullDate,
+      time: event.time,
+      quantity: ticketQuantity,
+      price: selectedTicketPrice,
+      ticketType: selectedTicketType,
+    };
+
+    dispatch({ type: 'ADD_TO_CART', payload: newCartItem });
     alert(`Sepete ${ticketQuantity} adet ${selectedTicketType} bileti eklendi.`);
   };
-
+  
+  const newLatitude = 37.7749;
+  const newLongitude = -122.4194;
 
   return (
     <ScrollView style={styles.container}>
@@ -115,13 +134,32 @@ const EventDetailsScreen = ({ route }) => {
         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16, textAlign: 'center', }}>Sepete Ekle</Text>
       </TouchableOpacity>
 
+      <View style={styles.mapContainer}>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: newLatitude,
+            longitude: newLongitude,
+            latitudeDelta: 0.02,
+            longitudeDelta: 0.02,
+          }}
+        >
+          <Marker
+            coordinate={{
+              latitude: newLatitude,
+              longitude: newLongitude,
+            }}
+            title={event.sceneAndCity}
+          />
+        </MapView>
+      </View>
     </ScrollView>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    margin: 16,
   },
   title: {
     fontSize: 24,
@@ -186,6 +224,16 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 24,
     marginTop: 16,
+  },
+  mapContainer: {
+    marginTop: 16,
+    height: 300,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+  },
+  map: {
+    flex: 1,
   },
 });
 
